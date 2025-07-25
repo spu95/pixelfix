@@ -27,21 +27,15 @@ def select_free_form(image_mat: MatLike, image_type) -> Optional[MatLike]:
     }
 
     # Prüfen ob Möbeltyp unterstützt wird
-    # image_type = image_type.lower()
-    # if image_type not in supported_image_types:
-    #     print(
-    #         f"Möbeltyp '{image_type}' nicht unterstützt. Verfügbar: {list(supported_image_types.keys())}"
-    #     )
-    #     return None
+    image_type = image_type.lower()
+    if image_type not in supported_image_types:
+        print(
+            f"Möbeltyp '{image_type}' nicht unterstützt. Verfügbar: {list(supported_image_types.keys())}"
+        )
+        return None
 
     # YOLOv8 Modell laden (beim ersten Mal wird es automatisch heruntergeladen)
     model = YOLO("./models/yolov8x-seg.pt")
-
-    # Bild einlesen
-    # image = cv2.imread(image_path)
-    # if image is None:
-    #     print(f"Konnte Bild nicht laden: {image_path}")
-    #     return None
 
     # Objekterkennung durchführen
     results = model(image_mat, verbose=False)
