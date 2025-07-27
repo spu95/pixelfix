@@ -4,6 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.pixelfix_dir: '%kernel.project_dir%/../..'
+    app.storage_dir: '%app.pixelfix_dir%/storage'
+    app.storage_images_dir: '%app.storage_dir%/images'
 
 services:
     # default configuration for services in *this* file
