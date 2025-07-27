@@ -95,6 +95,15 @@ class Order
         return $this->processingOptions;
     }
 
+    public function addProcessingOption(ProcessingOptions $option): static
+    {
+        if (!in_array($option, $this->processingOptions, true)) {
+            $this->processingOptions[] = $option;
+        }
+
+        return $this;
+    }
+
     public function setProcessingOptions(array $processingOptions): static
     {
         $this->processingOptions = $processingOptions;

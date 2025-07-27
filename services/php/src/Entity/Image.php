@@ -68,9 +68,9 @@ class Image
         return $this;
     }
 
-    public function getUploader(): ?Order
+    public function getUploader(): ?User
     {
-        return $this->customerOrder;
+        return $this->uploader;
     }
 
     public function setUploader(?User $uploader): static

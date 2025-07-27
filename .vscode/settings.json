@@ -2,5 +2,6 @@
     "cSpell.words": [
         "inversed",
         "Upgrader"
-    ]
+    ],
+    "postman.settings.dotenv-detection-notification-visibility": false
 }
