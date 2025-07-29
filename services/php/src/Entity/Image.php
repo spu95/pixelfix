@@ -4,20 +4,27 @@ namespace App\Entity;
 
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
 {
+    #[Groups(['image_list', 'image_detail'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['image_list', 'image_detail'])]
     #[ORM\Column(length: 255)]
     private ?string $fileName = null;
 
+    #[Groups(['image_list', 'image_detail'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    #[Groups(['image_list', 'image_detail'])]
+    private string $test = 'test';
 
     #[ORM\ManyToOne(inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: true)]

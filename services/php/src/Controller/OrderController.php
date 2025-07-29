@@ -29,7 +29,7 @@ final class OrderController extends AbstractController
     #[Route('/api/orders', name: 'app_api_order_list', methods: ['GET'])]
     public function getOrderList(#[CurrentUser] User $user): JsonResponse
     {
-        return $this->json($user->getOrders());
+        return $this->json($user->getOrders(), context: ['groups' => 'order_list']);
     }
 
     #[Route('/api/order/create', name: 'app_api_order_create', methods: ['POST'])]

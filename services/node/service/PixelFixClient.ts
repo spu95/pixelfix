@@ -6,8 +6,8 @@ export class PixelFixClient {
 
     public async fetchData(
         path: string,
-        headers: Record<string, string>,
-        authData: AuthData | null = null
+        authData: AuthData | null = null,
+        headers: Record<string, string> = {},
     ): Promise<any> {
         const endpoint = this.getEndpoint(path);
 

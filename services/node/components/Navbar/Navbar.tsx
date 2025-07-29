@@ -11,9 +11,9 @@ import { Group } from '@mantine/core';
 import classes from './Navbar.module.css';
 
 const data = [
-    { link: '', label: 'Orders', icon: IconHome2 },
-    { link: '', label: 'Place Order', icon: IconPhotoCirclePlus },
-    { link: '', label: 'Settings', icon: IconSettings },
+    { link: '/', label: 'Orders', icon: IconHome2 },
+    { link: '/create-order', label: 'Place Order', icon: IconPhotoCirclePlus },
+    { link: '/settings', label: 'Settings', icon: IconSettings },
 ];
 
 export function Navbar() {
@@ -26,7 +26,7 @@ export function Navbar() {
             href={item.link}
             key={item.label}
             onClick={(event) => {
-                event.preventDefault();
+                // event.preventDefault();
                 setActive(item.label);
             }}
         >

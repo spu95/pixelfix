@@ -35,7 +35,6 @@ class ImageController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        // Validierung mit Symfony Constraints
         $violations = $this->validator->validate(
             $uploadedFile,
             [
@@ -61,13 +60,13 @@ class ImageController extends AbstractController
         }
 
         try {
-            // Delegiere die eigentliche Upload-Logik an den Service
-            $result = $this->imageUploadService->processUpload($user, $uploadedFile);
+            $uploadedImage = $this->imageUploadService->processUpload($user, $uploadedFile);
 
-            return $this->json([
-                'success' => true,
-                'data' => $result
-            ], Response::HTTP_CREATED);
+            return $this->json(
+                $uploadedImage,
+                Response::HTTP_CREATED,
+                context: ['groups' => 'image_detail']
+            );
         } catch (\Exception $e) {
             return $this->json([
                 'error' => 'Failed to upload image',

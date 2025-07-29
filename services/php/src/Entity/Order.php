@@ -9,25 +9,31 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 class Order
 {
+    #[Groups('order_list', 'order_detail')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('order_list', 'order_detail')]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[Groups('order_list', 'order_detail')]
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $processedAt = null;
 
+    #[Groups('order_list', 'order_detail')]
     #[ORM\Column(enumType: OrderStatus::class)]
     private ?OrderStatus $status = null;
 
+    #[Groups('order_list', 'order_detail')]
     #[ORM\Column(type: Types::SIMPLE_ARRAY, enumType: ProcessingOptions::class)]
     private array $processingOptions = [];
 
@@ -38,6 +44,7 @@ class Order
     /**
      * @var Collection<int, Image>
      */
+    #[Groups('order_detail')]
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'customerOrder', orphanRemoval: true)]
     private Collection $images;
 
