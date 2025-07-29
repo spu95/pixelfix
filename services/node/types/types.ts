@@ -23,3 +23,16 @@ export interface Image {
     fileName: string;
     createdAt: string; // ISO 8601 date string
 }
+
+export interface User {
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    companyName: string | null;
+    street: string;
+    houseNumber: string;
+    city: string;
+    zip: number;
+}

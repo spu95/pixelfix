@@ -65,6 +65,38 @@ export class PixelFixClient {
         }
     }
 
+    public async putData(
+        path: string,
+        data: any,
+        headers: Record<string, string> | null = null,
+        authData: AuthData | null = null
+    ): Promise<any> {
+        const endpoint = this.getEndpoint(path);
+
+        try {
+            const isFormData = data instanceof FormData;
+            const response = await fetch(endpoint, {
+                method: 'PUT',
+                headers: this.composeHeaders(headers, authData, isFormData),
+                body: isFormData ? data : JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new PixelFixApiException(
+                    response.status,
+                    'PUT_ERROR',
+                    response,
+                    `Failed to put data to ${endpoint}. Status: ${response.status}`
+                );
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Put error:', error);
+            throw error;
+        }
+    }
+
     private getEndpoint(path: string): string {
         return `${this.PIXEL_FIX_API_URL}/${path}`;
     }
