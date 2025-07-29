@@ -42,10 +42,11 @@ export class PixelFixClient {
         const endpoint = this.getEndpoint(path);
 
         try {
+            const isFormData = data instanceof FormData;
             const response = await fetch(endpoint, {
                 method: 'POST',
-                headers: this.composeHeaders(headers, authData),
-                body: JSON.stringify(data),
+                headers: this.composeHeaders(headers, authData, isFormData),
+                body: isFormData ? data : JSON.stringify(data),
             });
 
             if (!response.ok) {
@@ -68,10 +69,14 @@ export class PixelFixClient {
         return `${this.PIXEL_FIX_API_URL}/${path}`;
     }
 
-    private composeHeaders(headers: Record<string, string> | null, authData: AuthData | null): Record<string, string> {
-        const composedHeaders: Record<string, string> = {
-            'Content-Type': 'application/json',
-        };
+    private composeHeaders(headers: Record<string, string> | null, authData: AuthData | null, isFormData: boolean = false): Record<string, string> {
+        const composedHeaders: Record<string, string> = {};
+
+        // Only set Content-Type if it's not FormData (browser will set it automatically for FormData)
+        if (!isFormData) {
+            composedHeaders['Content-Type'] = 'application/json';
+        }
+        // For FormData, don't set Content-Type - let the browser set it with the correct boundary
 
         if (headers) {
             Object.assign(composedHeaders, headers);

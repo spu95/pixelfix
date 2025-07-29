@@ -37,6 +37,6 @@ final class OrderController extends AbstractController
     {
         $order = $this->createOrderService->createOrder($createOrder, $user);
 
-        return $this->json($order);
+        return $this->json($order, context: ['groups' => 'order_detail']);
     }
 }

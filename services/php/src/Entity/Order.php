@@ -15,25 +15,25 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Table(name: '`order`')]
 class Order
 {
-    #[Groups('order_list', 'order_detail')]
+    #[Groups(['order_list', 'order_detail'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups('order_list', 'order_detail')]
+    #[Groups(['order_list', 'order_detail'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[Groups('order_list', 'order_detail')]
+    #[Groups(['order_list', 'order_detail'])]
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $processedAt = null;
 
-    #[Groups('order_list', 'order_detail')]
+    #[Groups(['order_list', 'order_detail'])]
     #[ORM\Column(enumType: OrderStatus::class)]
     private ?OrderStatus $status = null;
 
-    #[Groups('order_list', 'order_detail')]
+    #[Groups(['order_list', 'order_detail'])]
     #[ORM\Column(type: Types::SIMPLE_ARRAY, enumType: ProcessingOptions::class)]
     private array $processingOptions = [];
 

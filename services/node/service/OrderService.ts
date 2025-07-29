@@ -7,17 +7,17 @@ export class OrderService {
     constructor(private readonly pixelFixClient: PixelFixClient) { }
 
     async getOrderList(authData: AuthData): Promise<Order[]> {
-        return this.pixelFixClient.fetchData('/orders', authData);
+        return this.pixelFixClient.fetchData('orders', authData);
     }
 
     async uploadImage(file: File, authData: AuthData): Promise<Image> {
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('image', file);
 
-        return this.pixelFixClient.postData('/orders/upload-image', formData, null, authData);
+        return this.pixelFixClient.postData('upload/image', formData, null, authData);
     }
 
     async createOrder(createOrder: CreateOrder, authData: AuthData): Promise<Order> {
-        return this.pixelFixClient.postData('/order/create', createOrder, null, authData);
+        return this.pixelFixClient.postData('order/create', createOrder, null, authData);
     }
 }
