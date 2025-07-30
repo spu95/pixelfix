@@ -7,11 +7,13 @@ use App\Entity\Order;
 use App\Entity\User;
 use App\Enumeration\OrderStatus;
 use App\Enumeration\ProcessingOptions;
+use App\Message\ProcessImageMessage;
 use App\Model\CreateOrder;
 use App\Repository\ImageRepository;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class CreateOrderService
 {
@@ -20,6 +22,7 @@ class CreateOrderService
         private readonly ImageRepository $imageRepository,
         private readonly OrderRepository $orderRepository,
         private readonly EntityManagerInterface $entityManager,
+        private readonly MessageBusInterface $messageBus,
     ) {}
 
     public function createOrder(CreateOrder $createOrder, User $user): Order
@@ -45,6 +48,8 @@ class CreateOrderService
 
         $this->entityManager->persist($order);
         $this->entityManager->flush();
+
+        $this->messageBus->dispatch(new ProcessImageMessage($order->getId()));
 
         return $order;
     }
