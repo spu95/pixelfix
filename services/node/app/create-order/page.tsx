@@ -20,7 +20,7 @@ export default function CreateOrderPage() {
     const { authData } = useAuthData();
 
     const handleImageUpload = async (files: File[]) => {
-        if (!authData) return;
+        if (!authData) { return; }
 
         setLoading(true);
         setError(null);
@@ -37,7 +37,7 @@ export default function CreateOrderPage() {
     };
 
     const handleCreateOrder = async () => {
-        if (!authData || uploadedImages.length === 0) return;
+        if (!authData || uploadedImages.length === 0) { return; }
 
         setLoading(true);
         setError(null);
@@ -68,7 +68,7 @@ export default function CreateOrderPage() {
         <Container size={600} my={40}>
             <Title order={1} mb="lg">Create Order</Title>
 
-            <Stepper active={activeStep} breakpoint="sm">
+            <Stepper active={activeStep}>
                 <Stepper.Step
                     label="Upload Images"
                     description="Select your images"
