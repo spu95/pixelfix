@@ -23,7 +23,7 @@ services:
     container_name: pixelfix_php
     volumes:
       - ./services/php:/var/www/backend
-      - ./storage:/var/www/storage
+      - ./storage:/var/storage
     environment:
       - DATABASE_URL=mysql://pixelfix:pixelfix@mysql:3306/pixelfix?serverVersion=8.0&charset=utf8mb4
       - JWT_PRIVATE_KEY_PATH=/var/www/backend/config/jwt/private.pem
