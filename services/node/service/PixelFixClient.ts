@@ -2,7 +2,7 @@ import { PixelFixApiException } from "@/exception/PixelFixApiException";
 import { AuthData } from "@/model/AuthData";
 
 export class PixelFixClient {
-    private readonly PIXEL_FIX_API_URL = 'http://127.0.0.1:8000/api';
+    private readonly PIXEL_FIX_API_URL = 'http://localhost/api';
 
     public async fetchData(
         path: string,

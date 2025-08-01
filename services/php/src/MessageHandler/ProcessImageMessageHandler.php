@@ -15,13 +15,12 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\Multipart\FormDataPart;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 
 #[AsMessageHandler]
 class ProcessImageMessageHandler
 {
-    private const PYTHON_API_URL = 'http://127.0.0.1:8002';
-
     private readonly HttpClientInterface $httpClient;
 
     public function __construct(
@@ -29,6 +28,8 @@ class ProcessImageMessageHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly LoggerInterface $logger,
         private readonly ParameterBagInterface $parameterBag,
+        #[Autowire('%env(PYTHON_API_BASE_URL)%')]
+        private readonly string $pythonApiBaseUrl,
         ?HttpClientInterface $httpClient = null
     ) {
         $this->httpClient = $httpClient ?? HttpClient::create();
@@ -88,7 +89,7 @@ class ProcessImageMessageHandler
                 'file' => DataPart::fromPath($imagePath, $image->getFileName())
             ]);
 
-            $response = $this->httpClient->request('POST', self::PYTHON_API_URL . '/select-free-form', [
+            $response = $this->httpClient->request('POST', $this->pythonApiBaseUrl . '/select-free-form', [
                 'headers' => $formData->getPreparedHeaders()->toArray(),
                 'body' => $formData->bodyToIterable()
             ]);

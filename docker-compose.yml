@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: pixelfix_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./services/node:/var/www/frontend
+      - ./services/php/public:/var/www/backend/public
+    depends_on:
+      - php
+      - node
+    networks:
+      - pixelfix-network
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: pixelfix_php
+    volumes:
+      - ./services/php:/var/www/backend
+      - ./storage:/var/www/storage
+    environment:
+      - DATABASE_URL=mysql://pixelfix:pixelfix@mysql:3306/pixelfix?serverVersion=8.0&charset=utf8mb4
+      - JWT_PRIVATE_KEY_PATH=/var/www/backend/config/jwt/private.pem
+      - JWT_PUBLIC_KEY_PATH=/var/www/backend/config/jwt/public.pem
+      - MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0
+    depends_on:
+      - mysql
+    networks:
+      - pixelfix-network
+
+  node:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+    container_name: pixelfix_node
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./services/node:/var/www/frontend
+      - /var/www/frontend/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - pixelfix-network
+
+  python:
+    build:
+      context: .
+      dockerfile: docker/python/Dockerfile
+    container_name: pixelfix_python
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./services/python:/var/www/python
+      - ./storage:/var/www/storage
+    environment:
+      - PYTHONPATH=/var/www/python
+    networks:
+      - pixelfix-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: pixelfix_mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=pixelfix
+      - MYSQL_USER=pixelfix
+      - MYSQL_PASSWORD=pixelfix
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - pixelfix-network
+
+volumes:
+  mysql_data:
+
+
+networks:
+  pixelfix-network:
+    driver: bridge

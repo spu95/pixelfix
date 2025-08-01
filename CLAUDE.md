@@ -29,6 +29,7 @@ The project follows a microservices architecture with three main services:
 
 ### Image Processing (Python - `/services/python/`)
 - YOLO model integration for object detection/segmentation
+- FastAPI server for image processing endpoints
 - Transformations in `/transformations/` directory
 - Processing pipeline for image analysis
 
@@ -60,6 +61,48 @@ php bin/console lexik:jwt:generate-keypair
 # Development server
 symfony serve -d
 ```
+
+### Python (FastAPI)
+```bash
+# Development server (run from /services/python/)
+source venv/bin/activate
+fastapi dev main.py --port 8001
+```
+
+## Docker Development Setup
+
+The project includes a complete Docker development environment with the following services:
+
+### Services
+- **NGINX** (Port 80): Reverse proxy routing frontend and API requests
+- **Node.js** (Port 3000): Next.js development server
+- **PHP-FPM**: Symfony API with automatic Messenger worker
+- **Python** (Port 8001): FastAPI server with virtual environment
+- **MySQL** (Port 3306): Database server
+
+### Docker Commands
+```bash
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f [service_name]
+
+# Stop all services
+docker-compose down
+
+# Rebuild specific service
+docker-compose build [service_name]
+
+# Access service shell
+docker-compose exec [service_name] bash
+```
+
+### Service URLs
+- Frontend: http://localhost (via NGINX)
+- Backend API: http://localhost/api/ (via NGINX)
+- Python API: http://localhost:8001
+- MySQL: localhost:3306
 
 ## Key Configuration
 

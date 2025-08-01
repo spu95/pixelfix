@@ -1,0 +1,7 @@
+/var/
+/vendor/
+
+###> phpunit/phpunit ###
+/.phpunit.cache/
+###< phpunit/phpunit ###
+
